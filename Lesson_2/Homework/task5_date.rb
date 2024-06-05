@@ -30,4 +30,4 @@ months.each do |mm, dd|
       number += dd
    end
 end
-puts "Найдень порядковый номер даты: #{number}"
+puts "Найден порядковый номер даты: #{number}"
