@@ -150,3 +150,13 @@ def move_train
   train.show_current_station
   train.show_train_route
 end
+
+def show_trains_on_stations
+ @stations.each_with_index do|station, index| puts "#{station.name}"
+  station.trains.select do|train|
+   print " #{train.number} - #{train.type};"
+   puts ""
+  end
+ end
+end
+
