@@ -7,6 +7,7 @@ require_relative "Wagon"
 require_relative "Wagon_cargo"
 require_relative "Wagon_passanger"
 
+
 class RailRoad
  def initialize
   @stations = []
@@ -25,19 +26,20 @@ class RailRoad
 
  private
  def show_menu
-  puts "Выберите команду:"
-  puts "1. Создать станцию"
-  puts "2. Создать поезд"
-  puts "3. Создать маршрут"
-  puts "4. Создать вагон"
-  puts "5. Создать маршрут станции"
-  puts "6. Удалить маршрут станции"
-  puts "7. Назначить маршрут поезду"
-  puts "8. Добавить вагон к поезду"
-  puts "9. Отцеплять вагоны от поезда"
-  puts "10. Перемещать поезд по маршруту вперед и назад"
-  puts "11. Просматривать список станций и список поездов на станции"
-  puts "12. Закрыть меню"
+  puts "====="
+  puts "Select a command:"
+  puts "1. Create station"
+  puts "2. Create train"
+  puts "3. Create route"
+  puts "4. Create wagon"
+  puts "5. Create station route"
+  puts "6. Delete station route"
+  puts "7. Adding train route"
+  puts "8. Add wagon a train"
+  puts "9. Delete wagon a train"
+  puts "10. Move train"
+  puts "11. Show trains on stations"
+  puts "12. Exit"
  end
 
  def run(command)
@@ -48,53 +50,57 @@ class RailRoad
   when 4 then create_wagon
   when 5 then create_station_route
   when 6 then delete_station_route
-  when 7 then assing_train_route
+  when 7 then adding_train_route
   when 8 then add_wagon_train
   when 9 then delete_wagon_train
   when 10 then move_train
   when 11 then show_trains_on_stations
   when 12 then exit
   else
-   puts "не нашли необходимую команду, попробуйте снова" 
+   puts "there is no such command, try again" 
   end
  end
 end
 
+#1
 def create_station
- puts "Создайте станцию:"
+ puts "Create a station:"
   name = gets.chomp
    @stations << Station.new(name)
- puts "Станция \"#{name}\" создана"
- puts "Список станций"
+ puts "Station \"#{name}\" created"
+ puts "List of stations"
    @stations.each_with_index {|val, index| puts "#{index + 1}. #{val.m=name}" }
 end
 
+#2
 def create_train
- puts "Создайте номер поезда:"
+ puts "Create number a train:"
   number = gets.chomp
- puts "Введите тип поезда : грузовой или пассажирский"
+ puts "Enter type train : cargo or passanger"
   type = gets.chomp.capitalize
 if type == "Cargo"
    @trains << TrainCargo.new(number)
- puts "Поезд \"#{type}\" с номером : \"#{number}\" создан"
+ puts "Train \"#{type}\" number : \"#{number}\" created"
 elsif type == "Passanger"
    @trains << TrainPassanger.new(number)
- puts "Поезд \"#{type}\" с номером : \"#{number}\" создан"
+ puts "Train \"#{type}\" number : \"#{number}\" created"
 else
- puts "Введите необходимый тип поезда"
+ puts "Enter the required train type"
 end
    @trains.each_with_index {|val, index| puts "#{index + 1}. #{val.number} - #{val.type} "}
 end
 
+#3
 def create_route
  puts "initial_point:"
    @initial_point = station_select
  puts "final_point:"
    @final_point = station_select
    @routes << Route.new(@initial_point, final_point)
- puts "Маршрут #{@initial_point.name} - #{final_point.name} создан"
+ puts "Route #{@initial_point.name} - #{final_point.name} created"
 end
 
+#4
 def create_wagon
    @wagons << WagonCargo.new
    @wagons << WagonPassanger.new
@@ -102,13 +108,15 @@ def create_wagon
    @wagons.each_with_index {|wagon, index| puts "#{index + 1}.#{wagon.type}"}
 end
 
+#5
 def create_station_route
  route = route_select
  station = station_select
- route.add.station(station)
+ route.add_station(station)
  route.show_route_stations
 end
 
+#6
 def delete_station_route
  route = route_select
  station = station_select
@@ -116,24 +124,34 @@ def delete_station_route
  route.show_route_stations
 end
 
-def assing_train_route
+#7
+def set_route
  train = train_select
- train = route_select
- train.assing_train_route(route)
+ route = route_select
+ train.set_route(route)
   @initial_point.train_arrival(train)
  train.show_train_route
  train.show_current_station
 end
 
-def add_wagon_train
+#8
+def add_wagons
  train = train_select
  train.add_wagons
  train.show_wagons
 end
 
+#9
+def delete_wagons
+ train = train_select
+ train.delete_wagons
+ train.show_wagons
+end
+
+#10
 def move_train
  train = train_select
- puts "Поезд направляется: вперед(f) или назад(b)?"
+ puts "Train is heading: forward(f) or back(b)?"
  direction = gets.chomp
 
  if direction == "f"
@@ -145,12 +163,14 @@ def move_train
   train.move.back
   train.current_station.train_arrival(train)
  else
-  puts "не нашли необходимую команду, попробуйте снова"
+  puts ""
  end
+
   train.show_current_station
   train.show_train_route
 end
 
+#11
 def show_trains_on_stations
  @stations.each_with_index do|station, index| puts "#{station.name}"
   station.trains.select do|train|

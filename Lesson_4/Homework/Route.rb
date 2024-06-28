@@ -8,16 +8,16 @@ class Route
  end
 
  def add_station(station)
-    @stations.inspect(-2, station)
+    @stations.insert(-2, station)
  end
 
- def delete_station(station)
-    @station.delete(station)
+ def delete_station_route(station)
+    @stations.delete(station)
  end
 
- def show_stations
-    puts "This route consists of #{@stations.lenght} station(s): "
-    @stations.each_with_index {|station, index| print "#{index + 1} - #{station.name}; " }
+ def show_route_stations
+    puts "This route consists of #{@stations.length} station(s): "
+    @stations.each_with_index {|station, index| print "#{index + 1} - #{station.name};" }
     puts " "
  end
 

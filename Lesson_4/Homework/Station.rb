@@ -6,11 +6,11 @@ class Station
     @trains = []
  end
 
- def arrive(train)
+ def train_arrival(train)
     @trains << train
  end
 
- def return_type(type)
+ def departure(train)
     @trains.delete(train)
  end
 
