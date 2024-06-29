@@ -39,7 +39,7 @@ class RailRoad
   puts "9. Delete wagon a train"
   puts "10. Move train"
   puts "11. Show trains on stations"
-  puts "12. Exit"
+  puts "12. Close menu"
  end
 
  def run(command)
@@ -50,8 +50,8 @@ class RailRoad
   when 4 then create_wagon
   when 5 then create_station_route
   when 6 then delete_station_route
-  when 7 then adding_train_route
-  when 8 then add_wagon_train
+  when 7 then set_route
+  when 8 then add_wagons
   when 9 then delete_wagon_train
   when 10 then move_train
   when 11 then show_trains_on_stations
@@ -69,7 +69,7 @@ def create_station
    @stations << Station.new(name)
  puts "Station \"#{name}\" created"
  puts "List of stations"
-   @stations.each_with_index {|val, index| puts "#{index + 1}. #{val.m=name}" }
+   @stations.each_with_index {|val, index| puts "#{index + 1}. #{val.name}" }
 end
 
 #2
@@ -96,8 +96,8 @@ def create_route
    @initial_point = station_select
  puts "final_point:"
    @final_point = station_select
-   @routes << Route.new(@initial_point, final_point)
- puts "Route #{@initial_point.name} - #{final_point.name} created"
+   @routes << Route.new(@initial_point, @final_point)
+ puts "Route #{@initial_point.name} - #{@final_point.name} created"
 end
 
 #4
@@ -180,3 +180,34 @@ def show_trains_on_stations
  end
 end
 
+#доп. функциий для внутренних процессов
+def train_select
+ puts "List of trains:"
+  @trains.each_with_index {|val, index| puts "#{index + 1}. #{val.number}" }
+ puts "Choose a #{@trains.length} train(s):"
+ num = gets.chomp.to_i
+ train = @trains[num - 1]
+end
+
+def station_select
+ puts "List of stations:"
+  @stations.each_with_index {|val, index| puts "#{index + 1}. #{val.name}" }
+ puts "List a station number:"
+ num = gets.chomp.to_i
+ station = @stations[num - 1]
+end
+
+def route_select
+ puts "List of the routes:"
+  @routes.each_with_index {|val, index| puts "#{index + 1}. #{val.stations[0].name} - #{val.stations[-1].name}" }
+ puts "Enter number of the route:"
+ num = gets.chomp.to_i
+ route = @routes[num - 1]
+end
+
+def wagon_select
+ puts "Enter the number of the type:"
+  @wagons.each_with_index {|wagon, index| puts "#{index + 1}.#{wagon.type}" }
+ num = gets.chomp.to_i
+ wagon = @wagons[num - 1]
+end

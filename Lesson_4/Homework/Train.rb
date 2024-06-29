@@ -33,7 +33,7 @@ class Train
  end
 
  def show_wagons
-    puts "The #{self.type} train number: #{self.number} has #{wagons.length} wagon(s)"
+    puts "The #{self.type} train number: #{self.number} has wagon(s)"
  end
 
  def set_route(route)
