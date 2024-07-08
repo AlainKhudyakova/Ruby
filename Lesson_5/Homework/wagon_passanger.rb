@@ -1,5 +1,5 @@
 class WagonPassanger < Wagon
  def initialize
-  @type = :passanger
+   @type = :passanger
  end
 end

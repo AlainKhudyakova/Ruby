@@ -1,9 +1,9 @@
 module Company
   attr_reader :company_name
 
- def specify_company(name)
-  self.company_name = name
- end
+  def specify_company(name)
+    self.company_name = name
+  end
 
   protected
 
