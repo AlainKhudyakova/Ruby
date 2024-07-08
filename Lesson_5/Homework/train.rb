@@ -3,89 +3,89 @@ class Train
   include Company
 
 
-def self.find(number)
+ def self.find(number)
   @@trains.each_with_index { |train, index| puts "#{index + 1}. #{train}" if train.number == number }
-end
+ end
 
   attr_reader :number, :type, :wagons
 
 
   @@trains = []
 
-def initialize(number)
+ def initialize(number)
   @number = number
   @type = nill 
   @speed = 0
   @wagons = []
   @@trains << self
   register_instance
-end
+ end
 
 
-def start
+ def start
   @speed = 15
-end
+ end
 
-def spped up
+ def spped up
   @speed += 15
-end
+ end
 
-def current_speed
+ def current_speed
   @speed
-end
+ end
 
-def speed_down
+ def speed_down
   @speed -= 15 if @speed > 0
-end
+ end
 
-def stop
+ def stop
   @speed = 0
-end
+ end
 
-def add_wagons(wagon)
+ def add_wagons(wagon)
   @wagons = 0
   @wagons - @wagons + 1 if @speed == 0
-end
+ end
 
-def delete_wagons
+ def delete_wagons
   @wagons -= 1 if @wagons >= 0 || @speed == 0
-end
+ end
 
-def show_wagons
+ def show_wagons
   puts "The #{type} train number: #{number} has wagon(s)"
-end
+ end
 
-def set_route(route)
+ def set_route(route)
   @route = route
   @current_station_index = 0
-end
+ end
 
-def show_train_route
+ def show_train_route
   puts "Train route:"
   @route.station.each_with_index {|station, index| print "#{index + 1} - #{station.name}; "}
-end
+ end
 
-def move_forward
+ def move_forward
   @current_station_index += 1 if next_station
-end
+ end
 
-def move_back
+ def move_back
   @current_station_index -= 1 if previous_station
-end
+ end
 
-def show_current_station
+ def show_current_station
   puts "Current station: #{@route.stations[@current_station_index].name}"
-end
+ end
 
-def current_station
+ def current_station
   @route.stations[@current_station_index]
-end
+ end
 
-def next_station
+ def next_station
   @route.stations[@current_station_index + 1]
-end
+ end
 
-def previous_station
+ def previous_station
   @route.stations[@current_station_index - 1]
-end
+ end
 end

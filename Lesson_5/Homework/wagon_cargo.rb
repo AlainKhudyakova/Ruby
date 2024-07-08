@@ -1,5 +1,5 @@
 class WagonCargo < Wagon
-  def initialize
+ def initialize
   @type = :cargo
-  end
+ end
 end

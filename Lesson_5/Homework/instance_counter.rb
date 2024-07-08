@@ -1,18 +1,18 @@
 module InstanceCounter
-  def self.included(base)
+ def self.included(base)
   base.extend ClassMethods
   base.include InstanceMethods
-  end
+ end
 
-module ClassMethods
+ module ClassMethods
   def instances 
-  @instances ||= 0
+   @instances ||= 0
   end
 
-  attr_writer :instances
-end
+   attr_writer :instances
+ end
 
-module InstanceMethods
+ module InstanceMethods
   private
 
   def register_instance

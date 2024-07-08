@@ -4,32 +4,32 @@ class Station
 
   @@stations ||= []
 
-def self.all
+ def self.all
   @@stations
-end
+ end
 
-def initialize(name)
+ def initialize(name)
   @name = name
   @trains = []
   @@stations << self
   register_instance
-end
+ end
 
-def train_arrival(train)
+ def train_arrival(train)
   @trains << train unless train_include?(train)
-end
+ end
 
-def departure(train)
+ def departure(train)
   @trains.delete(train) if train_include?(train)
-end
+ end
 
-def trains_type(type)
+ def trains_type(type)
   @trains.filter { |t| t.type == type }.size
-end
+ end
 
 private
 
-def train_include?(train)
+ def train_include?(train)
   @train.include?(train)
-end
+ end
 end
