@@ -4,19 +4,19 @@ module InstanceCounter
     base.include InstanceMethods
   end
 
- module ClassMethods
-   def instances 
-     @instances ||= 0
-   end
+  module ClassMethods
+    def instances 
+      @instances ||= 0
+    end
 
-   attr_writer :instances
- end
+  attr_writer :instances
+  end
 
- module InstanceMethods
-   private
+  module InstanceMethods
+    private
 
-   def register_instance
-     self.class.instances += 1
-   end
- end
+    def register_instance
+      self.class.instances += 1
+    end
+  end
 end

@@ -1,7 +1,7 @@
 class TrainCargo < Train
  def initialize (number)
    @type = :cargo
-    super
+   super
  end
 
  protected
