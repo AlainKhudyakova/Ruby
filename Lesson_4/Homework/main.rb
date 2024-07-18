@@ -2,10 +2,10 @@ require_relative "Route"
 require_relative "Station"
 require_relative "Train"
 require_relative "Train_cargo"
-require_relative "Train_passanger"
+require_relative "Train_passenger"
 require_relative "Wagon"
 require_relative "Wagon_cargo"
-require_relative "Wagon_passanger"
+require_relative "Wagon_passenger"
 
 
 class RailRoad
@@ -82,7 +82,7 @@ if type == "Cargo"
   @trains << TrainCargo.new(number)
   puts "Train \"#{type}\" number : \"#{number}\" created"
 elsif type == "Passanger"
-  @trains << TrainPassanger.new(number)
+  @trains << TrainPassenger.new(number)
   puts "Train \"#{type}\" number : \"#{number}\" created"
 else
   puts "Enter the required train type"
@@ -103,7 +103,7 @@ end
 #4
  def create_wagon
   @wagons << WagonCargo.new
-  @wagons << WagonPassanger.new
+  @wagons << WagonPassenger.new
   puts @wagons
   @wagons.each_with_index {|wagon, index| puts "#{index + 1}.#{wagon.type}"}
  end
