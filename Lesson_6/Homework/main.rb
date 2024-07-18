@@ -167,7 +167,7 @@ def move_train
     train.current_station.train_arrival(train)
   else
     puts ""
- end
+  end
   train.show_current_station
   train.show_train_route
 end
@@ -179,7 +179,7 @@ def show_trains_on_stations
   print " #{train.number} - #{train.type};"
   puts ""
   end
- end
+  end
 end
 
 #доп. функциий для внутренних процессов
