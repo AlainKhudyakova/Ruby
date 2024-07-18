@@ -1,6 +1,6 @@
 class TrainPassenger < Train
  def initialize (number)
-   @type = :passenger
+   @type = PASSENGER_TYPE
    super
  end
 
@@ -8,7 +8,7 @@ class TrainPassenger < Train
 
  def validate!
    super
-   raise "The type of train is incorrect" if type != :passenger
+   raise "The type of train is incorrect" if type != PASSENGER_TYPE
    
  end
 end

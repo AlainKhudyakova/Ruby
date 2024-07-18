@@ -1,22 +1,17 @@
 require_relative "./validate"
 require_relative "./instance_counter"
 require_relative "./company"
-require_relative "./route.rb"
-require_relative "./station.rb"
-require_relative "./train.rb"
-require_relative "./train_cargo.rb"
-require_relative "./train_passenger.rb"
-require_relative "./wagon.rb"
-require_relative "./wagon_cargo.rb"
+require_relative "./route"
+require_relative "./station"
+require_relative "./train"
+require_relative "./train_cargo"
+require_relative "./train_passenger"
+require_relative "./wagon"
+require_relative "./wagon_cargo"
 require_relative "./wagon_passenger"
 
 
 class RailRoad
-  COMMAND = {1 => "create_station", 2 => "creat_train", 3 => "creat_route", 4 => "creat_wagon", 5 => "create_station_route", 6 => "delete_station_route",
-    7 => "set_route", 8 => "add_wagons", 9 => "delete_wagon_train", 10 => "move_train", 11 => "show_trains_on_stations", 12 => "exit"  
-  }.freeze
-
-
   def initialize
     @stations = []
     @trains = []
@@ -24,45 +19,61 @@ class RailRoad
     @wagons = []
   end
 
+attempt = 0
+
   def start
     loop do
     show_menu
     command = gets.chomp.to_i
     run(command)
-    end
+  end
   end
 
-  #private
+  private
   def show_menu
-    menu_items = ["Create a station", "Create a train", "Create a route",
-      "Create a wagon", "Filling the route with stations",
-      "Delete stations from the route", "assign a route to the train",
-      "Hook wagon to the train", "Unhook wagons form the train",
-      "Move the train forward or back along the route",
-      "View trains on stations", "View stations on stations",
-      "Close menu" ]
-    menu_items.each_with_index(1) {|item, index| puts "#{index}. #{item}"}
+    puts "Commands"
+    puts "1. Create station"
+    puts "2. Create train"
+    puts "3. Create route"
+    puts "4. Create wagon"
+    puts "5. Create station route"
+    puts "6. Delete station route"
+    puts "7. Adding train route"
+    puts "8. Add wagon a train"
+    puts "9. Delete wagon a train"
+    puts "10. Move train"
+    puts "11. Show trains on stations"
+    puts "12. Close menu"
   end
 
 
   def run(command)
-    @run = COMMAND[command] || "There is no such command, try again"
-    #case command
-    #when 1 then create_station
-    #when 2 then create_train
-    #when 3 then create_route
-    #when 4 then create_wagon
-    #when 5 then create_station_route
-    #when 6 then delete_station_route
-    #when 7 then set_route
-    #when 8 then add_wagons
-    #when 9 then delete_wagon_train
-    #when 10 then move_train
-    #when 11 then show_trains_on_stations
-    #when 12 then exit
-    #else
-    # puts "there is no such command, try again" 
-    #end
+    case command
+    when 1 then create_station
+    when 2 then create_train
+    when 3 then create_route
+    when 4 then create_wagon
+    when 5 then create_station_route
+    when 6 then delete_station_route
+    when 7 then set_route
+    when 8 then add_wagons
+    when 9 then delete_wagon_train
+    when 10 then move_train
+    when 11 then show_trains_on_stations
+    when 12 then exit
+    else
+      puts "there is no such command, try again" 
+    end
+
+
+
+  rescue StandardError => e
+    attempt += 1
+    puts "Error has occured: #{e.massege}. Try again!"
+    puts "Attempts: #{attempt}" if attempt.positive?
+    retry if attempt < 3
+    puts "Attempts are exhausted. Try again later."
+    attempt = 0
   end
 end
 
@@ -80,7 +91,7 @@ end
 def create_train
   puts "Create number a train:"
   number = gets.chomp
-  puts "Enter type train : cargo or passenger"
+  puts "Enter type train : cargo or passanger"
   type = gets.chomp.capitalize
   if type == "Cargo"
     @trains << TrainCargo.new(number)

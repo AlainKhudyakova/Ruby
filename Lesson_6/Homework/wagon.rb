@@ -1,5 +1,9 @@
 class Wagon
+  include Validation
   include Company
+
+  PASSENGER_TYPE = :passenger
+  CARGO_TYPE = :cargo
 
   attr_reader :type
 

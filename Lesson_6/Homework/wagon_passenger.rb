@@ -1,12 +1,13 @@
 class WagonPassenger < Wagon
- def initialize
-   @type = :passenger
- end
+  def initialize
+    @type = PASSENGER_TYPE
+    super
+  end
 
- protected
+  protected
 
- def validate!
-   raise "The type of waggon is incorrect" if type != :passenger
-   
- end
+  def validate!
+    super
+    raise "The type of waggon is incorrect" if type != PASSENGER_TYPE
+  end
 end
