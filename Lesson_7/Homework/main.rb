@@ -159,10 +159,35 @@ end
   end
 
 #8
-  def add_wagons
-    train = train_select
-    train.add_wagons
-    train.show_wagons
+  def add_wagons(train = nil)
+    if train.nil?
+      puts "Choose a train:"
+      train = create_train
+    end
+
+    puts "Enter the number of wagons:"
+    print "> "
+    wagon_count = gets.to_i
+    if train.type == Wagon::PASSENGER_TYPE
+      puts "Specify the number of seats:"
+      print "> "
+      total_volume = gets.to_i
+    else
+      puts "Specify the total volume of the wagon:"
+      print "> "
+      total_volume = gets.to_i
+    end
+
+    wagon_count.times do
+      wagon = if train.type == Train::PASSENGER_TYPE
+                WagonPassenger.new { |p| p.total_seats = total_seats }
+              else
+                WagonCargo.new { |p| p.total_volume = total_volume}
+              end
+      train.add_wagon(wagon)
+    end
+    puts "Wagons added"
+    
   end
 
 #9
