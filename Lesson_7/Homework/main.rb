@@ -192,9 +192,17 @@ end
 
 #9
   def delete_wagons
-    train = train_select
-    train.delete_wagons
-    train.show_wagons
+    puts "Choose a train:"
+    train = create_train
+
+    puts "Enter the number of wagons:"
+    wagon_count = gets.to_i
+
+    wagon_count.times do
+      wagon = train.type == Train::PASSENGER_TYPE ? WagonPassanger.new : WagonCargo.new
+      puts train.delete_wagon(wagon)
+    end
+    puts "Wagons deleted"
   end
 
 #10
