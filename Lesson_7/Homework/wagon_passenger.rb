@@ -24,5 +24,5 @@ class WagonPassenger < Wagon
 
   private
 
-  attr_writer :busy_seats, free_seats
+  attr_writer :busy_seats, :free_seats
 end
