@@ -79,7 +79,7 @@ attempt = 0
     end
   rescue StandardError => e
     attempt += 1
-    puts "Error has occured: #{e.massege}. Try again!"
+    puts "Error has occured: #{e.message}. Try again!"
     puts "Attempts: #{attempt}" if attempt.positive?
     retry if attempt > 3
     puts "Attempts are exhausted. Try again later."
