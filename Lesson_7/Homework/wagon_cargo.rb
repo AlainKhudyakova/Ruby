@@ -1,25 +1,13 @@
 class WagonCargo < Wagon
 
-  attr_accessor :total_volume
-  attr_reader :busy_volume, :free_volume
-
-  def initialize
+  def initialize(number, total_seats)
     @type = CARGO_TYPE
-    @busy_volume = 0
     super
-    @free_volume = @total_volume
   end
 
-  def take_volume(volume)
-    return if free_volume.zero?
-
-    self.busy_volume += volume if busy_volume != total_volume
-    self.free_volume -= volume if free_volume.positive?
-
-    return unless free_volume.negative?
-
-    self.free_volume = 0
-    self.busy_volume = @total_volume
+  def take_seats(volume)
+    raise "It's too much available volume is #{@free_seats}" unless @free_seats >= volume
+    @busy_seats += volume
   end
 
   protected
@@ -28,7 +16,4 @@ class WagonCargo < Wagon
     super
     raise "The type of waggon is incorrect" if type != CARGO_TYPE
   end
-
-  private
-  attr_writer :busy_volume, :free_volume
 end

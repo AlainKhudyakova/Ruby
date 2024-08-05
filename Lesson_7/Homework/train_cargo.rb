@@ -1,14 +1,14 @@
 class TrainCargo < Train
- def initialize (number)
-   @type = CARGO_TYPE
-   super
- end
+  def initialize (number)
+    @type = CARGO_TYPE
+    super
+  end
 
- protected
+  protected
 
- def validate!
-   super
-   raise "The type of train is incorrect" if type != CARGO_TYPE
-   
- end
+  def validate!
+    super
+    raise "The type of train is incorrect" if type != CARGO_TYPE
+    
+  end
 end

@@ -2,7 +2,7 @@ class Route
   include InstanceCounter
   include Validation
 
-  attr_reader :stations, :initial_point, :final_point
+  attr_reader :stations
 
   def initialize (initial_point, final_point)
     @initial_point = initial_point

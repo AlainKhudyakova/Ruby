@@ -5,6 +5,11 @@ module Company
     self.company_name = name
   end
 
+  def show_company
+    company
+    
+  end
+
   protected
 
   attr_writer :company_name

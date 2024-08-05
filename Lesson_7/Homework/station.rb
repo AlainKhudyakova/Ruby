@@ -7,7 +7,7 @@ class Station
   @@stations ||= []
 
   def self.all
-    @@stations
+    @@stations.each_with_index {|val, index| puts "#{index + 1}. #{val.name}" }
   end
 
   def self.find(name)
@@ -15,7 +15,7 @@ class Station
   end
 
   def initialize(name)
-    @name = name
+    @name = name.to_s.capitalize
     @trains = []
     validate!
     @@stations << self
