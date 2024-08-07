@@ -116,8 +116,8 @@ protected
   def validate!
     raise NotImplementedError, "Unable to create an object of a Class that is a parent!" if instance_of?(Train)
     raise "Number of train cannot be blank" if number.nil?
-    raise "Number of train must be between 5 and 6 characters long" if invalid_length?(number, 5, 6)
+    raise "Number of train must be between 3 and 6 characters long" if invalid_length?(number, 5, 6)
     raise "Number has invalid format" if number !~ NUMBER_FORMAT
-    raise "Company name must be between 4 and 30 characters long" if !company_name.nil? && invalid_length?(company_name)
+    raise "Company name must be between 2 and 30 characters long" if !company_name.nil? && invalid_length?(company_name)
   end
 end

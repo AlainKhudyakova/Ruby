@@ -24,48 +24,50 @@ attempt = 0
   def create_station
     puts "Create a station:"
     name = gets.chomp.to_s.capitalize
-    @stations << Station.new(name)
-    puts "Station \"#{name}\" created"
-  rescue StandardError => e
-    puts e
-  end
+    station = Station.find(name)
 
+    if station
+      puts "The station already exists"
+      station
+    else
+    puts "Station successfully created"
+    Station.new(name)
+  end
+end
 
   def create_train
     begin
       puts "Create number a train:"
-      number = gets.chomp
-      puts "Enter type train : cargo or passanger"
-      type = gets.chomp.capitalize
-    if type == "Cargo"
-      @trains << TrainCargo.new(number)
-      puts "Train \"#{type}\" number : \"#{number}\" created"
+      number = gets.strip
+      puts "Enter type train : cargo or passenger"
+      type = gets.to_i
+    if Train.find(number)
+      puts "The train already exists"
+    elsif type == "Cargo"
+      train = TrainCargo.new(number)
+      train
     elsif type == "Passenger"
-      @trains << TrainPassenger.new(number)
-      puts "Train \"#{type}\" number : \"#{number}\" created"
-    else
-      puts "Enter the required train type"
+      train = TrainPassenger.new(number)
+      train
+    else 
+      puts "Train successfully created "
     end
-    puts "Specify company:"
-    company_name = gets.chomp
-    @trains[-1].specify_company(company_name)
   rescue StandardError => e
     puts e
   end
-  @trains.each_with_index do |train, index|
-    puts "#{index + 1}. #{train.number} - #{train.type} produced by #{train.show_company}"
+end
+
+
+
+
+  def create_route(routes)
+    puts "Enter the name of the starting station"
+    initial_point = gets.strip
+    if initial_point.to_i.zero?
+      Station.new(initial_point)
+    else
+      initial_point = initial_point.to_i - 1
     end
-  end
-
-
-
-  def create_route
-    puts "initial_point:"
-    @initial_point = station_select
-    puts "final_point:"
-    @final_point = station_select
-    @routes << Route.new(@initial_point, @final_point)
-    puts "Route #{@initial_point.name} - #{final_point.name} created"
   end
 
 
@@ -77,16 +79,18 @@ attempt = 0
       type = gets.chomp.capitalize
       puts "Enter the number of the wagon:"
       number = gets.chomp
-      if type == "Cargo"
+    if type == "Cargo"
         puts "Enter the volume for this wagon:"
         total_seats = gets.chomp.capitalize
-        @wagons << WagonCargo.new(number, total_seats)
+        WagonCargo.find(number, total_seats)
+        wagon = WagonCargo.new(number, total_seats)
         @wagons[-1].specify_company(company_name)
-        puts "The \"#{type}\"(\"total_seats\") wagon has been created by \"#{company_name}\" "
+        puts "The \"#{type}\"(\"#{total_seats}\") wagon has been created by \"#{company_name}\" "
       elsif type == "Passenger"
         puts "Enter the number of sets for this wagon:"
         total_seats = gets.chomp.capitalize
-        @wagons << WagonPassenger.new(number, total_seats)
+        WagonPassenger.find(number, total_seats)
+        wagon = WagonPassenger.new(number, total_seats)
         @wagons[-1].specify_company(company_name)
         puts "The \"#{type}\"(\"#{total_seats}\") wagon has been created by \"#{company_name}\" "
       else
@@ -173,9 +177,9 @@ attempt = 0
     @trains.each_with_index do |train, index|
       puts "#{train.type.capitalize} train(#{train.number}) has wagon(s):"
       train.all_wagons do |wagon|
-        if wagon.type == ::CARGO_TYPE
+        if wagon.type == Train::CARGO_TYPE
           puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_volume}/#{wagon.volume} volume"
-        elsif wagon.type == ::PASSENGER_TYPE
+        elsif wagon.type == Train::PASSENGER_TYPE
           puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.seats} seats"
         else
           puts "There is no any wagon at train"

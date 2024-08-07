@@ -7,7 +7,7 @@ class Station
   @@stations ||= []
 
   def self.all
-    @@stations.each_with_index {|val, index| puts "#{index + 1}. #{val.name}" }
+    @@stations
   end
 
   def self.find(name)
@@ -15,7 +15,7 @@ class Station
   end
 
   def initialize(name)
-    @name = name.to_s.capitalize
+    @name = name
     @trains = []
     validate!
     @@stations << self
@@ -23,11 +23,11 @@ class Station
   end
 
   def train_arrival(train)
-    @trains << train unless train_include?(train)
+    @trains << train unless train_included?
   end
 
   def departure(train)
-    @trains.delete(train) if train_include?(train)
+    @trains.delete(train) if train_included?(train)
   end
 
   def trains_type(type)
@@ -46,7 +46,7 @@ protected
 
   def validate!
     raise "Station name cannot be blank" if name.nil?
-    raise "Station name must be between 4 and 30 characters long" if invalid_length?(name)
+    raise "Station name must be between 2 and 30 characters long" if invalid_length?(name)
   end
 
 private
