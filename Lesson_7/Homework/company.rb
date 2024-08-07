@@ -6,7 +6,7 @@ module Company
   end
 
   def show_company
-    company
+    company_name
     
   end
 

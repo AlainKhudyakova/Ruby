@@ -18,14 +18,13 @@ class RailRoad
     @wagons = []
   end
 end
-
+@wagons = []
 attempt = 0
-
+#1
   def create_station
     puts "Create a station:"
     name = gets.chomp.to_s.capitalize
     station = Station.find(name)
-
     if station
       puts "The station already exists"
       station
@@ -34,7 +33,7 @@ attempt = 0
     Station.new(name)
   end
 end
-
+#2
   def create_train
     begin
       puts "Create number a train:"
@@ -56,11 +55,8 @@ end
     puts e
   end
 end
-
-
-
-
-  def create_route(routes)
+#3
+  def create_route
     puts "Enter the name of the starting station"
     initial_point = gets.strip
     if initial_point.to_i.zero?
@@ -68,41 +64,46 @@ end
     else
       initial_point = initial_point.to_i - 1
     end
+
+    puts "Enter the end name stations"
+    final_point = gets.strip
+
+    if final_point.to_i.zero?
+      Station.new(final_point)
+    else
+    puts "Route successfully createsd"
+      final_point = initial_point.to_i - 1
+    end
   end
-
-
+#4
   def create_wagon
     begin
-      puts "Specify company:"
-      company_name = gets.chomp
-      puts "Enter the type of the wagon: cargo or passenger?"
-      type = gets.chomp.capitalize
-      puts "Enter the number of the wagon:"
-      number = gets.chomp
-    if type == "Cargo"
-        puts "Enter the volume for this wagon:"
-        total_seats = gets.chomp.capitalize
-        WagonCargo.find(number, total_seats)
-        wagon = WagonCargo.new(number, total_seats)
-        @wagons[-1].specify_company(company_name)
-        puts "The \"#{type}\"(\"#{total_seats}\") wagon has been created by \"#{company_name}\" "
+        puts "Specify company:"
+        company_name = gets.chomp
+        puts "Enter the type of the wagon: cargo or passenger?"
+        type = gets.chomp.capitalize
+        puts "Enter the number of the wagon:"
+        number = gets.chomp
+      if type == "Cargo"
+          puts "Enter the volume for this wagon:"
+          total_seats = gets.chomp.capitalize
+          @wagons << WagonCargo.new(number, total_seats)
+          @wagons[-1].specify_company(company_name)
+          puts "The \"#{type}\"(\"#{total_seats}\") wagon has been created by \"#{company_name}\" "
       elsif type == "Passenger"
-        puts "Enter the number of sets for this wagon:"
-        total_seats = gets.chomp.capitalize
-        WagonPassenger.find(number, total_seats)
-        wagon = WagonPassenger.new(number, total_seats)
-        @wagons[-1].specify_company(company_name)
-        puts "The \"#{type}\"(\"#{total_seats}\") wagon has been created by \"#{company_name}\" "
+          puts "Enter the number of seats for this wagon:"
+          total_seats = gets.chomp.capitalize
+          @wagons << WagonPassenger.new(number, total_seats)
+          @wagons[-1].specify_company(company_name)
+          puts "The \"#{type}\"(\"#{total_seats}\") wagon has been created by \"#{company_name}\" "
       else
-        puts "Enter a correct type of the wagon"
-        end
-    rescue StandardError => e
-      puts e
+          puts "Enter a correct type of the wagon"
+      end
     end
-    @wagons.each_with_index{ |wagon, index| puts "#{index + 1}.#{wagon.type} produced by #{wagon.show_company}" }
+      rescue StandardError => e
+        puts e
   end
-
-
+#5
   def create_station_route
     route = route_select
     station = station_select
@@ -110,7 +111,7 @@ end
     route.show_route_stations
   end
 
-
+#6
   def delete_station_route
     route = route_select
     station = station_select
@@ -118,7 +119,7 @@ end
     route.show_route_stations
   end
 
-
+#7
   def set_route
     train = train_select
     route = route_select
@@ -129,6 +130,7 @@ end
   end
 
 
+#8
   def add_wagons
     train = train_select
     wagon = wagon_select
@@ -136,14 +138,14 @@ end
     train.show_wagons
   end
 
-
+#9
   def delete_wagons
     train = train_select
     train.delete_wagons
     train.show_wagons
   end
 
-
+#10
   def move_train
     train = train_select
     puts "Train is heading: forward(f) or back(b)?"
@@ -163,63 +165,65 @@ end
   train.show_current_station
   train.show_train_route
   end
-
-
-  def show_trains_on_stations
-    @stations.each_with_index do |station, index|
-      puts "#{index}. #{station.name}:"
-      station.all_trains { |train| print " #{train.number} - #{train.type};"}
-      puts ""
-    end
-  end
-
-  def show_wagons_at_trains
-    @trains.each_with_index do |train, index|
-      puts "#{train.type.capitalize} train(#{train.number}) has wagon(s):"
-      train.all_wagons do |wagon|
-        if wagon.type == Train::CARGO_TYPE
-          puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_volume}/#{wagon.volume} volume"
-        elsif wagon.type == Train::PASSENGER_TYPE
-          puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.seats} seats"
-        else
-          puts "There is no any wagon at train"
-        end
+#11
+    def show_trains_on_stations
+      # via Proc
+      @stations.each_with_index do |station, index|
+        puts "#{index}. #{station.name}:"
+        station.all_trains { |train| print " #{train.number} - #{train.type};" }
+        puts ""
       end
-      puts ""
     end
-  end
+    
+
+#12
+    def show_wagons_at_trains
+      @trains.each_with_index do |train, index|
+        puts "#{train.type.capitalize} train(#{train.number}) has wagon(s):"
+        train.all_wagons do |wagon|
+          if wagon.type == Train::CARGO_TYPE
+            puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_volume}/#{wagon.volume} volume"
+          elsif wagon.type == Train::PASSENGER_TYPE
+            puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.seats} seats"
+          else
+            puts "There is no any wagon at train"
+          end
+        end
+        puts ""
+      end
+    end
 
 #доп. функциий для внутренних процессов
-  def train_select
-    puts "List of trains:"
-    @trains.each_with_index {|val, index| puts "#{index + 1}. #{val.number}" }
-    puts "Choose a #{@trains.length} train(s):"
-    num = gets.chomp.to_i
-    train = @trains[num - 1]
-  end
+def train_select
+  puts "List of trains:"
+  @trains.each_with_index {|val, index| puts "#{index + 1}. #{val.number}-#{val.type} " }
+  puts "Choose a #{@trains.length} train(s):"
+  num = gets.chomp.to_i
+  @trains[num - 1]
+end
 
-  def station_select
-    puts "List of stations:"
-    @stations.each_with_index {|val, index| puts "#{index + 1}. #{val.name}" }
-    puts "List a station number:"
-    num = gets.chomp.to_i
-    station = @stations[num - 1]
-  end
+def station_select
+  puts "List of stations:"
+  @stations.each_with_index {|val, index| puts "#{index + 1}. #{val.name}" }
+  puts "List a station number:"
+  num = gets.chomp.to_i
+  @stations[num - 1]
+end
 
-  def route_select
-    puts "List of the routes:"
-    @routes.each_with_index {|val, index| puts "#{index + 1}. #{val.stations[0].name} - #{val.stations[-1].name}" }
-    puts "Enter number of the route:"
-    num = gets.chomp.to_i
-    route = @routes[num - 1]
-  end
+def route_select
+  puts "List of the routes:"
+  @routes.each_with_index {|val, index| puts "#{index + 1}. #{val.stations[0].name} - #{val.stations[-1].name}" }
+  puts "Enter number of the route:"
+  num = gets.chomp.to_i
+  @routes[num - 1]
+end
 
-  def wagon_select
-    puts "Enter the number of the type:"
-    @wagons.each_with_index {|wagon, index| puts "#{index + 1}.#{wagon.type}" }
-    num = gets.chomp.to_i
-    wagon = @wagons[num - 1]
-  end
+def wagon_select
+  puts "Enter the number of the type:"
+  @wagons.each_with_index { |val, index| puts "#{index + 1}.#{val.number}-#{val.type}" }
+  num = gets.chomp.to_i
+  @wagons[num - 1]
+end
 
   def commands
     puts "Commands:"
@@ -234,6 +238,7 @@ end
     puts "9. Delete wagon a train"
     puts "10. Move train"
     puts "11. Show trains on stations"
+    puts "12. Show wagon on trains"
     puts "help - list of commands"
     puts "exit"
   end
@@ -275,6 +280,8 @@ begin
       move_train
     when '11'
       show_trains_on_stations
+    when '12'
+      show_wagons_at_trains
     else
       puts "Command #{input} not found!" 
     end

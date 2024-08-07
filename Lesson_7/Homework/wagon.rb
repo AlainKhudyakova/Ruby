@@ -7,12 +7,13 @@ class Wagon
 
   attr_reader :type, :number, :total_seats, :busy_seats
 
+
   def initialize(number, total_seats)
-    @number = generate_number
-    yield self if block_given?
+    @number = number
     @total_seats = total_seats
     @busy_seats = 0
     @free_seats = total_seats
+    yield self if block_given?
     validate!
   end
 

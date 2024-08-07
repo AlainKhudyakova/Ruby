@@ -5,6 +5,8 @@ class WagonPassenger < Wagon
     super
   end
 
+
+
   def take_seats
     raise "Sorry there are no an available seats yet" unless @free_seats.positive?
     @busy_seats += 1
