@@ -30,27 +30,27 @@ attempt = 0
 #1
   def create_station
     puts "Create a station:"
-    name = gets.chomp
+    name = gets.chomp.to_s.capitalize
     @stations << Station.new(name)
     puts "Station \"#{name}\" created"
-    puts "list of station"
-    @stations.each_with_index { |val, index| puts "#{index + 1}. #{val.name}" }
+  rescue StandardError => e
+    puts e
   end
 
 #2
   def create_train
-    begin
-      puts "Create number a train:"
-      number = gets.chomp
-      puts "Enter type train : cargo or passenger"
-      type = gets.chomp.capitalize
-    if type == "Cargo"
+    puts "Create number a train:"
+    number = gets.chomp
+    puts "Enter type train : cargo or passanger"
+    type = gets.chomp.capitalize
+  if type == "Cargo"
       @trains << TrainCargo.new(number)
-      puts "The \"#{type}\" train with number \"#{number}\" has been created"
+      puts "Train \"#{type}\" number : \"#{number}\" created"
     elsif type == "Passenger"
       @trains << TrainPassenger.new(number)
-      puts "The \"#{type}\" train with number: \"#{number}\" has been created"
-      puts "Train successfully created "
+      puts "Train \"#{type}\" number : \"#{number}\" created"
+    else
+      puts "Enter the required train type"
     end
     puts "specify company:"
     company = gets.chomp
@@ -60,9 +60,10 @@ attempt = 0
     end
   rescue Interrupt
     @trains.each_with_index do |train, index|
-    puts "#{index + 1}. #{train.number} - #{train.type} produced by #{train.show_company}"
+      puts "#{index + 1}. #{train.number} - #{train.type} produced by #{train.show_company}"
     end
   end
+
 
 #3
   def create_route
@@ -102,13 +103,14 @@ attempt = 0
       puts e
     end
   rescue Interrupt
-  @wagons.each_with_index { |wagon, index| puts "#{index + 1}.#{wagon.type} produced by #{wagon.show_company}" } 
+    @wagons.each_with_index { |wagon, index| puts "#{index + 1}.#{wagon.type} produced by #{wagon.show_company}" } 
   end
+
 
 #5
   def create_station_route
-    route = add_station
     route = route_select
+    #route = add_station
     station = station_select
     route.add_station(station)
     route.show_route_stations
@@ -118,25 +120,43 @@ attempt = 0
   def delete_station_route
     route = route_select
     station = station_select
-    route.delete_station_route(station)
+    route.delete_station(station)
     route.show_route_stations
   end
 
 #7
-  def set_route
-    route = route_select
+  #def assign_route
+  #  train = train_select
+  #  route = route_select
+  #  train.assign_route(route)
+  #  @initial_point.train_arrival(train)
+  #  train.show_train_route
+  #  train.show_current_station
+  #end
+
+  def assign_route
     train = train_select
-    train.set_route(route)
-    @initial_point.train_arrival(train)
-    train.show_train_route
-    train.show_current_station
+    return puts "Поезд не выбран." unless train # Проверяем правильность выбора поезда
+  
+    route = route_select
+    return puts "Маршрут не выбран." unless route # Проверяем правильность выбора маршрута
+  
+    if train.route
+      puts "Маршрут уже назначен для поезда #{train.number}."
+    else
+      train.assign_route(route)
+      @initial_point.train_arrival(train) # Предполагается, что @initial_point - это экземпляр Station
+      puts "Маршрут успешно назначен!"
+      train.show_train_route
+      train.show_current_station
+    end
   end
 
 #8
   def add_wagons
     train = train_select
-    wagon = wagon_select
-    train.add_wagons(wagon)
+    #wagon = wagon_select
+    train.add_wagons
     train.show_wagons
   end
 
@@ -153,28 +173,26 @@ attempt = 0
     puts "Train is heading: forward(f) or back(b)?"
     direction = gets.chomp
 
-  if direction == "f"
-    train.current_station.departure(train)
-    train.move.forward
-    train.current_station.train_arrival(train)
-  elsif direction == "b"
-    train.current_station.departure(train)
-    train.move.back
-    train.current_station.train_arrival(train)
-  else
-    puts "There is no such direction, try again"
+    if direction == "f"
+      train.current_station.departure(train)
+      train.move_forward
+      train.current_station.train_arrival(train)
+    elsif direction == "b"
+      train.current_station.departure(train)
+      train.move_back
+      train.current_station.train_arrival(train)
+    else
+      puts ""
+    end
+    train.show_current_station
+    train.show_train_route
   end
-  train.show_current_station
-  train.show_train_route
-  end
-
 
 #11
   def show_trains_on_stations
-    # via Proc
     @stations.each_with_index do |station, index|
       puts "#{index}. #{station.name}:"
-    station.all_trains { |train| print " #{train.number} - #{train.type};" }
+      station.all_trains { |train| print " #{train.number} - #{train.type};" }
       puts ""
     end
   end
@@ -184,9 +202,9 @@ def show_wagons_at_trains
   @trains.each_with_index do |train, index|
     puts "#{train.type.capitalize} train(#{train.number}) has wagon(s):"
     train.all_wagons do |wagon|
-      if wagon == Train::CARGO_TYPE
+      if wagon.type == Train::CARGO_TYPE
         puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_volume}/#{wagon.volume} volume"
-      elsif wagon == Train::PASSENGER_TYPE
+      elsif wagon.type == Train::PASSENGER_TYPE
         puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.seats} seats"
       else
         puts "There is no any wagon at train"
@@ -202,30 +220,30 @@ end
     @trains.each_with_index {|val, index| puts "#{index + 1}. #{val.number}" }
     puts "Choose a #{@trains.length} train(s):"
     num = gets.chomp.to_i
-    @trains[num - 1]
+    train = @trains[num - 1]
   end
 
   def station_select
-    puts "select a station:"
+    puts "Select a station:"
     @stations.each_with_index {|val, index| puts "#{index + 1}. #{val.name}" }
     puts "List a station number:"
     num = gets.chomp.to_i
-    @stations[num - 1]
+    station = @stations[num - 1]
   end
 
   def route_select
-    puts "select a route:"
+    puts "Select a route:"
     @routes.each_with_index {|val, index| puts "#{index + 1}. #{val.stations[0].name} - #{val.stations[-1].name}" }
     puts "Enter number of the route:"
     num = gets.chomp.to_i
-    @routes[num - 1]
+    route = @routes[num - 1]
   end
 
   def wagon_select
-    puts "Enter the number of the type:"
+    puts "Select a wagon:"
     @wagons.each_with_index {|wagon, index| puts "#{index + 1}.#{wagon.type}" }
     num = gets.chomp.to_i
-    @wagons[num - 1]
+    wagon = @wagons[num - 1]
   end
 
   def commands
@@ -251,8 +269,8 @@ end
   
   begin
     loop do
-      print '> '
-      input = gets&.strip&.downcase
+      print "> "
+      input = gets.strip
   
         begin
         case input

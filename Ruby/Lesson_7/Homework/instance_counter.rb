@@ -9,17 +9,12 @@ module InstanceCounter
       @instances ||= 0
     end
 
-    def instances_count
-      @instances ||= 0
-      @instances += 1
-    end
-
   attr_writer :instances
   end
 
   module InstanceMethods
-    protected
-
+    private
+    
     def register_instance
       self.class.instances += 1
     end

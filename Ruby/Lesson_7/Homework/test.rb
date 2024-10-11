@@ -11,6 +11,7 @@ require_relative "./wagon"
 require_relative "./wagon_cargo"
 require_relative "./wagon_passenger"
 
+
 @stations = []
 @trains = []
 @routes = []
@@ -40,6 +41,10 @@ puts "2. Create a train"
   @trains[1].specify_company("Train-Cargo")
   @trains[2].specify_company("Train-Pas")
   @trains[3].specify_company("Train-Pas")
+  puts "Test for @trains[0].Valid?: #{@trains[0].valid?}"
+  puts "Test for @trains[1].Valid?: #{@trains[1].valid?}"
+  puts "Test for @trains[2].Valid?: #{@trains[2].valid?}"
+  puts "Test for @trains[3].Valid?: #{@trains[3].valid?}"
   puts 'Trains:'
 @trains.each_with_index do |train, index|
   puts "#{index + 1}. #{train.number} - #{train.type} this train produced by #{train.show_company}"
@@ -87,15 +92,15 @@ puts "5. Create station route"
   puts ""
 
 puts "6. Delete station route"
-  @routes[0].delete_station_route(@stations[8])
+  @routes[0].delete_station(@stations[8])
   @routes[0].show_route_stations
   puts ""
 
 puts "7. Set a route to the train"
-  @trains[0].set_route(@routes[0])
-  @trains[0].set_route(@routes[0])
-  @trains[0].set_route(@routes[0])
-  @trains[0].set_route(@routes[0])
+  @trains[0].assign_route(@routes[0])
+  @trains[1].assign_route(@routes[0])
+  @trains[2].assign_route(@routes[0])
+  @trains[3].assign_route(@routes[0])
   puts 'Put the particular train to the first station of the route'
   @stations[0].train_arrival(@trains[0])
   @stations[0].train_arrival(@trains[1])
@@ -182,9 +187,9 @@ puts "10. Move train"
 puts ""
 
 puts "11. Show trains on stations"
-  @stations.each_with_index do|station, index| 
+  @stations.each_with_index do |station, index| 
     puts "#{index + 1}. #{station.name}:"
-    station.all_trains do|train|
+    station.all_trains do |train|
       print "#{train.type.capitalize} train(#{train.number}) has #{train.wagons.length} wagon(s) ;"
     puts ""
     end
