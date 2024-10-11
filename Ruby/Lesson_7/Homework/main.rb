@@ -20,10 +20,11 @@ class RailRoad
   end
 end
 
-@stations = []
-@trains = []
-@routes = []
-@wagons = []
+  @stations = []
+  @trains = []
+  @routes = []
+  @wagons = []
+
 
 attempt = 0
 
@@ -43,7 +44,7 @@ attempt = 0
     number = gets.chomp
     puts "Enter type train : cargo or passanger"
     type = gets.chomp.capitalize
-  if type == "Cargo"
+    if type == "Cargo"
       @trains << TrainCargo.new(number)
       puts "Train \"#{type}\" number : \"#{number}\" created"
     elsif type == "Passenger"
@@ -55,15 +56,14 @@ attempt = 0
     puts "specify company:"
     company = gets.chomp
     @trains[-1].specify_company(company)
-    rescue StandardError => e
+    puts ""
+  rescue StandardError => e
     puts e
     end
-  rescue Interrupt
-    @trains.each_with_index do |train, index|
-      puts "#{index + 1}. #{train.number} - #{train.type} produced by #{train.show_company}"
-    end
+  #rescue Interrupt
+  @trains.each_with_index do |train, index|
+  puts "#{index + 1}. #{train.number} - #{train.type} produced by #{train.show_company}"
   end
-
 
 #3
   def create_route
@@ -102,7 +102,7 @@ attempt = 0
     rescue StandardError => e
       puts e
     end
-  rescue Interrupt
+  #rescue Interrupt
     @wagons.each_with_index { |wagon, index| puts "#{index + 1}.#{wagon.type} produced by #{wagon.show_company}" } 
   end
 
@@ -315,6 +315,6 @@ end
       next
         end
   end
-  rescue Interrupt
+  #rescue Interrupt
       #ignored
   end

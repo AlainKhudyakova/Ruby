@@ -2,7 +2,7 @@ class Train
   include InstanceCounter
   include Company
   include Validation
-  attr_reader :number, :type, :wagons, :stations, :route, :current_station
+  attr_reader :number, :type, :wagons, :stations
 
   def initialize(number)
     @number = number 
