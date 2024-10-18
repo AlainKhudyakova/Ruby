@@ -24,7 +24,6 @@ class Station
     end
   end
 
-
   def departure(train)
     if @trains.include?(train)
       @trains.delete(train) 

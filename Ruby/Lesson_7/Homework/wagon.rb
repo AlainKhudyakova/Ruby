@@ -8,7 +8,7 @@ class Wagon
   attr_reader :type, :number, :total_seats, :busy_seats
 
   def initialize(number, total_seats)
-    @number = generate_number
+    @number = number
     @total_seats = total_seats
     @busy_seats = 0
     @free_seats = total_seats
@@ -32,7 +32,4 @@ class Wagon
 
 private
 
-  def generate_number
-    rand(10_000...100_000)
-  end
 end

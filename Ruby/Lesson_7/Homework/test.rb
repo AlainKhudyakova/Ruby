@@ -32,7 +32,7 @@ puts "1. Create a station"
   Station.all
   puts ""
 
-puts "2. Create a train"
+puts "2. Create number a train"
   @trains << TrainCargo.new("001-AA")
   @trains << TrainCargo.new("AAA-02")
   @trains << TrainPassenger.new("003-BB")
@@ -57,6 +57,7 @@ puts "3. Create a route"
   puts ""
 
 puts "4. Create wagon"
+
   @wagons << WagonCargo.new("WC1", 100)
   @wagons << WagonPassenger.new("WP1", 12)
   @wagons[0].specify_company("Wagon-Cargo")
@@ -198,14 +199,14 @@ puts "11. Show trains on stations"
   puts '12. View wagons at trains'
 @trains.each_with_index do |train, _index|
   puts "#{train.type.capitalize} train(#{train.number}) has wagon(s):"
-  train.all_wagons do |wagon|
-    if wagon.type == :cargo
-      puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.total_seats} capacity"
-    elsif wagon.type == :passenger
-      puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.total_seats} seats"
+  train.all_wagons.each do |wagon|
+    if wagon.type == Train::CARGO_TYPE
+      puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.free_seats} capacity"
+    elsif wagon.type == Train::PASSENGER_TYPE
+      puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.free_seats} seats"
     else
-      puts 'There is no any wagon at train'
+      puts "There is no any wagon at train"
     end
   end
-  puts ''
+  puts ""
 end

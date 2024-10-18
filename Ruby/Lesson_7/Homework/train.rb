@@ -2,7 +2,7 @@ class Train
   include InstanceCounter
   include Company
   include Validation
-  attr_reader :number, :type, :wagons, :stations
+  attr_reader :number, :type, :wagons, :stations, :route
 
   def initialize(number)
     @number = number 
@@ -57,17 +57,6 @@ class Train
   def show_wagons
     puts "The #{self.type} train number: #{self.number} has #{@wagons.length} wagon(s)"
   end
-
-  #def assign_route(route)
-  #  @route = route
-  #  @current_station_index = 0
-  #end
-
-  #def assign_route(route)
-  #  @route = route
-  #  @current_station_index = 0
-  #  @current_station = @route.stations[@current_station_index] 
-  #end
 
   def assign_route(route)
     @route = route
