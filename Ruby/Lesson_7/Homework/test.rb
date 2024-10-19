@@ -197,9 +197,9 @@ puts "11. Show trains on stations"
   end
 
   puts '12. View wagons at trains'
-@trains.each_with_index do |train, _index|
-  puts "#{train.type.capitalize} train(#{train.number}) has wagon(s):"
-  train.all_wagons.each do |wagon|
+    @trains.each_with_index do |train, _index|
+    puts "#{train.type.capitalize} train(#{train.number}) has wagon(s):"
+    train.all_wagons.each do |wagon|
     if wagon.type == Train::CARGO_TYPE
       puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.free_seats} capacity"
     elsif wagon.type == Train::PASSENGER_TYPE

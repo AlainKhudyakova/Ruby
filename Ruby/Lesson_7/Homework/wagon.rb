@@ -5,22 +5,35 @@ class Wagon
   PASSENGER_TYPE = :passenger
   CARGO_TYPE = :cargo
 
-  attr_reader :type, :number, :total_seats, :busy_seats
+  attr_reader :type, :number, :total_seats, :total_volume
 
-  def initialize(number, total_seats)
+  def initialize(number, total_seats = 0, total_volume = 0, type)
     @number = number
     @total_seats = total_seats
-    @busy_seats = 0
-    @free_seats = total_seats
+    @total_volume = total_volume
+    #@busy_seats = 0
+    #@busy_volume = 0
+    @type = type
+    #@free_seats = total_seats
     validate!
   end
 
   def free_seats
-    @free_seats = @total_seats - @busy_seats
+    #@free_seats = @total_seats - @busy_seats
+    @total_seats - @busy_seats
   end
 
-  def take_seats
+  def occupy_seat
+    if free_seats > 0
+      @busy_seats += 1
+    else
     raise "should be implemented in subclases"
+    end
+  end
+
+  def free_volume
+    @total_volume - @busy_volume
+    
   end
 
   protected
@@ -29,7 +42,4 @@ class Wagon
     raise NotImplementedError, "Unable to create an object of a Class that is a parent!" if instance_of?(Wagon)
     raise "Company name must be between 2 and 50 characters long" if !company_name.nil? && invalid_length?(company_name)
   end
-
-private
-
 end

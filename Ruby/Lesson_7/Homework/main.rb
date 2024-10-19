@@ -64,7 +64,7 @@ attempt = 0
     rescue StandardError => e
     puts e
     end
-  @trains.each_with_index do |train, index|
+    @trains.each_with_index do |train, index|
     puts "#{index + 1}. #{train.number} - #{train.type} produced by #{train.show_company}"
     end 
   end
@@ -90,8 +90,8 @@ attempt = 0
       number = gets.chomp
     if type == "Cargo"
         puts "Enter the volume for this wagon:"
-        total_seats = gets.chomp.to_i
-        @wagons << WagonCargo.new(number, total_seats)
+        total_volume = gets.chomp.to_i
+        @wagons << WagonCargo.new(number, total_volume)
     elsif type == "Passenger"
         puts "Enter the number of seats for this wagon:"
         total_seats = gets.chomp.to_i
@@ -101,19 +101,43 @@ attempt = 0
       return
     end
     @wagons[-1].specify_company(company_name)
-    puts "The \"#{type}\" wagon (\"#{type == "Cargo" ? total_seats : total_seats}\") has been created by \"#{company_name}\" "
+    puts "The \"#{type}\" wagon (\"#{type == "Cargo" ? total_volume : total_seats}\") has been created by \"#{company_name}\" "
     rescue StandardError => e
       puts e
     end
-    display_wagons
+
+    occupy_cargo if type == "Cargo"
+    occupy_passenger if type == "Passenger"
   end
 
-  def display_wagons
-    @wagons.each_with_index do |wagon, index| 
-      puts "#{index + 1}. Wagon number: #{wagon.number}, Type: #{wagon.type}, Produced by: #{wagon.show_company}"
+  #def display_wagons
+  #  @wagons.each_with_index do |wagon, index| 
+  #    puts "#{index + 1}. Wagon number: #{wagon.number}, Type: #{wagon.type}, Produced by: #{wagon.show_company}"
+  #  end
+
+
+  def occupy_cargo
+    wagon = wagon_select
+    puts "Enter the occupied volume:"
+    volume = gets.chomp.to_i
+    if volume <= wagon.free_volume
+        wagon.occupy_space(volume)
+        puts " #{volume} Volume is busy!"
+        wagon.display_volume_info
+     end
+  end
+
+  def occupy_passenger
+    wagon = wagon_select
+    puts "Enter the number of occupied seats:"
+    seats = gets.chomp.to_i
+    if seats <= wagon.free_seats
+    seats.times {wagon.occupy_seat}
+   #wagon.occupy_seat(seats)
+    puts " #{seats} Seats is busy!"
+    wagon.display_seats_info
     end
   end
-
 
 #5
   def create_station_route
@@ -188,28 +212,30 @@ attempt = 0
 
 #11
   def show_trains_on_stations
-    @stations.each_with_index do |station, index|
-      puts "#{index}. #{station.name}:"
-      station.all_trains { |train| print " #{train.number} - #{train.type};" }
-      puts ""
+    @stations.each_with_index do |station, index| 
+    puts "#{index + 1}. #{station.name}:"
+    station.all_trains do |train|
+      print "#{train.type.capitalize} train(#{train.number}) has #{train.wagons.length} wagon(s) ;"
+    end
+    puts ""
     end
   end
 
 #12
-def show_wagons_at_trains
-  @trains.each_with_index do |train, index|
-    puts "#{train.type.capitalize} train(#{train.number}) has wagon(s):"
-    train.all_wagons.each do |wagon|
-      if wagon.type == Train::CARGO_TYPE
-        puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.free_seats} volume"
-      elsif wagon.type == Train::PASSENGER_TYPE
-        puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.free_seats}/#{wagon.free_seats} seats"
-      else
-      end
-    end
-    puts ""
+  def show_wagons_at_trains
+   @trains.each_with_index do |train, index|
+   puts "#{train.type.capitalize} train(#{train.number}) has wagon(s):"
+   train.all_wagons.each do |wagon|
+     if wagon.type == Train::CARGO_TYPE
+       puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.occupied_volume}/#{wagon.total_volume} volume"
+     elsif wagon.type == Train::PASSENGER_TYPE
+       puts "#{wagon.type.capitalize} wagon(#{wagon.number}) - #{wagon.occupied_seats}/#{wagon.total_seats} seats"
+     else
+     end
+   end
+   puts ""
+   end
   end
-end
 
 #доп. функциий для внутренних процессов
   def train_select
@@ -312,4 +338,4 @@ end
       next
         end
   end
-  end
+ end
