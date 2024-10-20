@@ -47,7 +47,7 @@ class Train
   end
 
   def add_wagons(wagon)
-    @wagons.insert(-1, wagon) if @speed.zero? && wagon.type == type
+    @wagons << wagon if @speed.zero? && wagon.type == type
   end
 
   def delete_wagons
@@ -97,6 +97,7 @@ class Train
   def all_wagons(&block)
     @wagons.each(&block)
   end
+
 
   protected
 

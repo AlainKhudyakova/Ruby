@@ -11,15 +11,11 @@ class Wagon
     @number = number
     @total_seats = total_seats
     @total_volume = total_volume
-    #@busy_seats = 0
-    #@busy_volume = 0
     @type = type
-    #@free_seats = total_seats
     validate!
   end
 
   def free_seats
-    #@free_seats = @total_seats - @busy_seats
     @total_seats - @busy_seats
   end
 

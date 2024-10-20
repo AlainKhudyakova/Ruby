@@ -110,12 +110,6 @@ attempt = 0
     occupy_passenger if type == "Passenger"
   end
 
-  #def display_wagons
-  #  @wagons.each_with_index do |wagon, index| 
-  #    puts "#{index + 1}. Wagon number: #{wagon.number}, Type: #{wagon.type}, Produced by: #{wagon.show_company}"
-  #  end
-
-
   def occupy_cargo
     wagon = wagon_select
     puts "Enter the occupied volume:"
@@ -133,7 +127,6 @@ attempt = 0
     seats = gets.chomp.to_i
     if seats <= wagon.free_seats
     seats.times {wagon.occupy_seat}
-   #wagon.occupy_seat(seats)
     puts " #{seats} Seats is busy!"
     wagon.display_seats_info
     end
@@ -212,14 +205,15 @@ attempt = 0
 
 #11
   def show_trains_on_stations
-    @stations.each_with_index do |station, index| 
-    puts "#{index + 1}. #{station.name}:"
-    station.all_trains do |train|
-      print "#{train.type.capitalize} train(#{train.number}) has #{train.wagons.length} wagon(s) ;"
+   @stations.each_with_index do |station, index| 
+   puts "#{index + 1}. #{station.name}:"
+   station.all_trains do |train|
+   print "#{train.type.capitalize} train(#{train.number}) has #{train.wagons.length} wagon(s) ;"
     end
-    puts ""
+   puts ""
     end
-  end
+  end 
+
 
 #12
   def show_wagons_at_trains
