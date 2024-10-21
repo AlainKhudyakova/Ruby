@@ -26,6 +26,6 @@ class WagonPassenger < Wagon
 
   def validate!
     super
-    raise "The type of wagon is incorrect" if type != PASSENGER_TYPE
+    raise 'The type of wagon is incorrect' if type != PASSENGER_TYPE
   end
 end

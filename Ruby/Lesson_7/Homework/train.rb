@@ -5,7 +5,7 @@ class Train
   attr_reader :number, :type, :wagons, :stations, :route
 
   def initialize(number)
-    @number = number 
+    @number = number
     @speed = 0
     @wagons = []
     validate!
@@ -13,14 +13,12 @@ class Train
     register_instance
   end
 
-
   PASSENGER_TYPE = :passenger
   CARGO_TYPE = :cargo
 
   NUMBER_FORMAT = /^[a-za-я0-9]{3}-?[a-zа-я0-9]{2}$/i
 
   @@trains = []
-
 
   def self.find(number)
     @@trains.each_with_index { |train, index| puts "#{index + 1}. #{train}" if train.number == number }
@@ -30,7 +28,7 @@ class Train
     @speed = 15
   end
 
-  def speed up
+  def speed_up
     @speed += 15
   end
 
@@ -55,7 +53,7 @@ class Train
   end
 
   def show_wagons
-    puts "The #{self.type} train number: #{self.number} has #{@wagons.length} wagon(s)"
+    puts "The #{type} train number: #{number} has #{@wagons.length} wagon(s)"
   end
 
   def assign_route(route)
@@ -65,9 +63,9 @@ class Train
   end
 
   def show_train_route
-    puts "Train route:"
-      @route.stations.each_with_index {|station, index| print "#{index + 1} - #{station.name}; "}
-      puts ""
+    puts 'Train route:'
+    @route.stations.each_with_index { |station, index| print "#{index + 1} - #{station.name}; " }
+    puts ''
   end
 
   def move_forward
@@ -98,15 +96,13 @@ class Train
     @wagons.each(&block)
   end
 
-
   protected
 
   def validate!
-    raise NotImplementedError, "Unable to create an object of a Class that is a parent!" if instance_of?(Train)
-    raise "Number of train cannot be blank" if number.nil?
-    raise "Number of train must be between 3 and 6 characters long" if invalid_length?(number, 3, 6)
-    raise "Number has invalid format" if number !~ NUMBER_FORMAT
-    raise "Company name must be between 2 and 50 characters long" if !company_name.nil? && invalid_length?(company_name)
+    raise NotImplementedError, 'Unable to create an object of a Class that is a parent!' if instance_of?(Train)
+    raise 'Number of train cannot be blank' if number.nil?
+    raise 'Number of train must be between 3 and 6 characters long' if invalid_length?(number, 3, 6)
+    raise 'Number has invalid format' if number !~ NUMBER_FORMAT
+    raise 'Company name must be between 2 and 50 characters long' if !company_name.nil? && invalid_length?(company_name)
   end
 end
-

@@ -11,6 +11,8 @@ class Wagon
     @number = number
     @total_seats = total_seats
     @total_volume = total_volume
+    #@busy_seats = 0
+    #@busy_volume = 0
     @type = type
     validate!
   end
@@ -20,22 +22,20 @@ class Wagon
   end
 
   def occupy_seat
-    if free_seats > 0
-      @busy_seats += 1
-    else
-    raise "should be implemented in subclases"
-    end
+    raise 'should be implemented in subclases' unless free_seats > 0
+
+    @busy_seats += 1
   end
 
   def free_volume
     @total_volume - @busy_volume
-    
   end
 
   protected
 
   def validate!
-    raise NotImplementedError, "Unable to create an object of a Class that is a parent!" if instance_of?(Wagon)
-    raise "Company name must be between 2 and 50 characters long" if !company_name.nil? && invalid_length?(company_name)
+    raise NotImplementedError, 'Unable to create an object of a Class that is a parent!' if instance_of?(Wagon)
+    raise 'Company name must be between 2 and 50 characters long' if !company_name.nil? && invalid_length?(company_name)
+    raise 'Invalid wagon type' unless [PASSENGER_TYPE, CARGO_TYPE].include?(@type)
   end
 end

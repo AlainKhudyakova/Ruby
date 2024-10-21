@@ -19,16 +19,16 @@ class Station
 
   def train_arrival(train)
     if @trains.include?(train)
-        puts "Train #{train.number} is already at the station."
+      puts "Train #{train.number} is already at the station."
     else
-      @trains << train 
+      @trains << train
       puts "Train #{train.number} has arrived at the station."
     end
   end
 
   def departure(train)
     if @trains.include?(train)
-      @trains.delete(train) 
+      @trains.delete(train)
     else
       puts "Train #{train.number} is not at the station."
     end
@@ -36,7 +36,7 @@ class Station
 
   def display_trains_on_station
     if @trains.empty?
-      puts "No trains at the station."
+      puts 'No trains at the station.'
     else
       puts "Trains at the station #{name}:"
       all_trains do |train|
@@ -45,15 +45,14 @@ class Station
     end
   end
 
-
   def all_trains(&block)
     @trains.each(&block)
   end
 
-protected
+  protected
 
   def validate!
-    raise "Station name cannot be blank" if name.nil?
-    raise "Station name must be between 2 and 50 characters long" if invalid_length?(name)
+    raise 'Station name cannot be blank' if name.nil?
+    raise 'Station name must be between 2 and 50 characters long' if invalid_length?(name)
   end
 end
