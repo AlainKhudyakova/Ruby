@@ -1,6 +1,4 @@
-require_relative './validate'
-require_relative './instance_counter'
-require_relative './company'
+require_relative './modules'
 require_relative './route'
 require_relative './station'
 require_relative './train'

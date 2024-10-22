@@ -11,8 +11,6 @@ class Wagon
     @number = number
     @total_seats = total_seats
     @total_volume = total_volume
-    #@busy_seats = 0
-    #@busy_volume = 0
     @type = type
     validate!
   end
